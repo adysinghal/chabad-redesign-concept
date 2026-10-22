@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chabad.org Redesign Concept v2</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600&family=DM+Mono:wght@400;500&family=Frank+Ruhl+Libre:wght@500;700&display=swap" rel="stylesheet">
+<!--
+Photo credits (voluntary courtesy; all CC0, no attribution required):
+torah-closeup.jpg: "Closeup of Torah Scroll" by Jacob Gucker (Wikimedia Commons, CC0)
+torah-museum.jpg: "Torah scroll, Jewish Museum and Tolerance Center" (Wikimedia Commons, CC0)
+torah-dedication.jpg: "Dedication of a new Torah Scroll, Hebron" by BananaNotes (Wikimedia Commons, CC0)
+synagogue-interior-1.jpg: "Istambouleye Synagogue, interior", Library of Congress (rawpixel, CC0)
+-->
+<style>
+/* tastemaker build stamp
+   macrostructure: 3 Editorial Index + 12 Poster Fold hero
+   nav: masthead-centered-wordmark | hero: poster-fold-fullbleed-photo + ledger card
+   feature: numbered-index-list | proof: none (no real metrics supplied) | cta: split diptych | footer: oversized wordmark
+   mood: elegant/warm, light | palette: generate_palette.py --mood elegant --seed 5787 + ink band #1c2a44
+   contrast: text/bg 16.2, primary/bg 4.56, on-primary/primary 4.86, cream/ink 13.4, gold-l/ink 7.1
+*/
+:root{
+  --text:#1f1a11; --text-2:#5b5245; --muted:#7d7466;
+  --bg:#fcf7ef; --surface:#f2ede5; --secondary:#e6ddd0; --border:#e2dcd5;
+  --primary:#846e4d; --on-primary:#ffffff;
+  --ink:#1c2a44; --ink-2:#26375a; --cream:#fcf7ef; --gold-l:#d9b878;
+  --serif:"EB Garamond",Georgia,serif; --sans:Inter,system-ui,sans-serif; --mono:"DM Mono",ui-monospace,monospace; --heb:"Frank Ruhl Libre",serif;
+  --s2:8px; --s3:12px; --s4:16px; --s6:24px; --s8:32px; --s12:48px; --s16:64px; --s24:96px; --s32:128px;
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;font-size:16px}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+h1,h2,h3,h4{font-family:var(--serif);font-weight:500;line-height:1.08;letter-spacing:-.01em}
+.wrap{max-width:1280px;margin:0 auto;padding:0 var(--s8)}
+.mono{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+.heb{font-family:var(--heb)}
+:focus-visible{outline:2px solid var(--primary);outline-offset:3px;border-radius:2px}
+.rule{border:0;border-top:1px solid var(--border)}
+.link{color:var(--primary);font-weight:500;border-bottom:1px solid currentColor;padding-bottom:1px;transition:color .2s var(--ease)}
+.link:hover{color:var(--text)}
+.btn{display:inline-flex;align-items:center;gap:var(--s2);padding:13px 22px;font-weight:500;font-size:14px;border-radius:2px;transition:background-color .2s var(--ease),color .2s var(--ease),transform .2s var(--ease)}
+.btn-dark{background:var(--text);color:var(--bg)}
+.btn-dark:hover{background:var(--primary)}
+.btn-bronze{background:var(--primary);color:var(--on-primary)}
+.btn-bronze:hover{background:var(--text)}
+.btn-line{border:1px solid currentColor}
+
+.notice{background:var(--ink);color:var(--cream);text-align:center;font-size:12.5px;padding:7px 16px}
+
+/* Masthead */
+.topline{display:flex;justify-content:space-between;align-items:center;padding:var(--s3) 0;color:var(--text-2);gap:var(--s4)}
+.topline .heb{font-size:15px;color:var(--primary)}
+.topline nav{display:flex;gap:var(--s6);font-size:13px}
+.topline nav a:hover{color:var(--primary)}
+.masthead{text-align:center;padding:var(--s6) 0 var(--s4);border-top:1px solid var(--text);border-bottom:1px solid var(--border);position:relative}
+.wordmark{font-family:var(--serif);font-size:clamp(44px,7vw,88px);font-weight:500;letter-spacing:-.03em;line-height:1;display:inline-flex;align-items:baseline;gap:.08em}
+.wordmark .dot{color:var(--primary)}
+.masthead .tag{margin-top:var(--s2);color:var(--muted)}
+.mast-actions{position:absolute;right:0;top:50%;transform:translateY(-50%);display:flex;gap:var(--s2)}
+.mast-left{position:absolute;left:0;top:50%;transform:translateY(-50%)}
+.icon-btn{width:42px;height:42px;display:grid;place-items:center;border:1px solid var(--border);border-radius:50%;transition:border-color .2s var(--ease)}
+.icon-btn:hover{border-color:var(--primary)}
+.sections{display:flex;justify-content:center;gap:var(--s8);padding:var(--s3) 0;border-bottom:1px solid var(--text);font-size:14.5px;font-weight:500;position:sticky;top:0;background:var(--bg);z-index:40}
+.sections a{position:relative;padding:4px 0;color:var(--text-2)}
+.sections a::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:1px;background:var(--primary);transform:scaleX(0);transform-origin:left;transition:transform .25s var(--ease)}
+.sections a:hover{color:var(--text)}
+.sections a:hover::after{transform:scaleX(1)}
+.burger{display:none}
+
+/* Poster fold */
+.poster{position:relative;height:min(84vh,760px);min-height:560px;overflow:hidden;background:#2a2116;color:var(--cream)}
+.poster-img{position:absolute;inset:-6% 0 0 0;height:112%;width:100%;object-fit:cover;filter:sepia(.25) contrast(1.05) brightness(.62)}
+.poster::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(20,15,8,.88) 0%,rgba(20,15,8,.55) 48%,rgba(20,15,8,.15) 100%)}
+.poster .wrap{position:relative;z-index:2;height:100%;display:grid;grid-template-columns:1.25fr .75fr;align-items:end;gap:var(--s12);padding-bottom:var(--s16)}
+.poster .kicker{color:var(--gold-l);display:flex;gap:var(--s3);align-items:center}
+.poster .kicker::before{content:"";width:28px;height:1px;background:currentColor}
+.poster h1{font-size:clamp(42px,6.2vw,86px);margin:var(--s4) 0 var(--s6);font-weight:400}
+.poster h1 em{font-style:italic;color:var(--gold-l)}
+.poster p{max-width:520px;font-size:17px;color:#e9e1d2}
+.poster .by{margin-top:var(--s8);display:flex;gap:var(--s6);align-items:center;flex-wrap:wrap}
+.poster .by .mono{color:#cfc4b1}
+.poster .btn-line{color:var(--cream)}
+.poster .btn-line:hover{background:var(--cream);color:var(--text)}
+
+.ledger{background:rgba(252,247,239,.96);color:var(--text);padding:var(--s8);border-top:3px solid var(--primary)}
+.ledger .mono{color:var(--primary)}
+.ledger h3{font-size:30px;margin:var(--s2) 0 var(--s4)}
+.ledger .heb-big{font-family:var(--heb);font-size:22px;color:var(--text-2);margin-left:var(--s2)}
+.ledger table{width:100%;border-collapse:collapse;font-size:14.5px}
+.ledger td{padding:var(--s3) 0;border-top:1px solid var(--border)}
+.ledger td:last-child{text-align:right;font-family:var(--serif);font-size:22px}
+.ledger .loc{display:flex;justify-content:space-between;align-items:center;margin-top:var(--s4);font-size:13.5px;color:var(--text-2)}
+.flame{display:inline-block;width:8px;height:13px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;background:radial-gradient(circle at 50% 70%,#fff3c4,#e9a73c 60%,#c4651c);transform-origin:50% 100%;animation:flick 1.8s ease-in-out infinite alternate;margin-right:3px}
+@keyframes flick{to{transform:scale(1.08,1.18) rotate(3deg)}}
+
+/* Daily index */
+.sec{padding:var(--s24) 0}
+.sec-head{display:grid;grid-template-columns:200px 1fr auto;gap:var(--s8);align-items:end;padding-bottom:var(--s6);border-bottom:1px solid var(--text);margin-bottom:var(--s8)}
+.sec-head .num{font-family:var(--serif);font-size:15px;color:var(--primary);font-style:italic}
+.sec-head h2{font-size:clamp(34px,4vw,52px)}
+.index{display:grid;grid-template-columns:5fr 7fr;gap:var(--s12)}
+.feature-photo{position:relative;overflow:hidden;aspect-ratio:4/5;background:var(--surface)}
+.feature-photo img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease)}
+.feature-photo:hover img{transform:scale(1.03)}
+.feature-photo figcaption{position:absolute;left:0;right:0;bottom:0;padding:var(--s6);background:linear-gradient(transparent,rgba(20,15,8,.85));color:var(--cream)}
+.feature-photo figcaption h3{font-size:30px;margin-top:var(--s2)}
+.feature-photo .mono{color:var(--gold-l)}
+.list{list-style:none;counter-reset:n}
+.list li{counter-increment:n;border-bottom:1px solid var(--border)}
+.list a{display:grid;grid-template-columns:56px 1fr auto;gap:var(--s4);align-items:baseline;padding:var(--s6) 0}
+.list a::before{content:counter(n,decimal-leading-zero);font-family:var(--mono);font-size:13px;color:var(--muted)}
+.list h4{font-size:25px;line-height:1.2;transition:color .2s var(--ease)}
+.list a:hover h4{color:var(--primary)}
+.list .meta{display:flex;gap:var(--s3);margin-top:6px;font-size:13.5px;color:var(--text-2)}
+.list .meta b{font-weight:500;color:var(--primary)}
+.list .type{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--border);padding:3px 8px;color:var(--text-2);white-space:nowrap}
+
+/* Parsha band */
+.band{background:var(--ink);color:var(--cream);padding:var(--s24) 0;position:relative;overflow:hidden}
+.band .ghost{position:absolute;right:-2%;top:50%;transform:translateY(-50%);font-family:var(--heb);font-weight:700;font-size:clamp(160px,24vw,360px);color:rgba(217,184,120,.08);line-height:1;pointer-events:none;white-space:nowrap}
+.band-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--s16);position:relative}
+.band .mono{color:var(--gold-l)}
+.band h2{font-size:clamp(48px,6vw,80px);margin:var(--s4) 0}
+.band h2 .heb{color:var(--gold-l);font-size:.7em;margin-left:var(--s3)}
+.band p{color:#c9cfdb;max-width:460px;font-size:17px}
+.band .actions{display:flex;gap:var(--s3);margin-top:var(--s8);flex-wrap:wrap}
+.band .btn-line{color:var(--cream)}
+.band .btn-line:hover{background:var(--cream);color:var(--ink)}
+.band .btn-gold{background:var(--gold-l);color:var(--ink)}
+.band .btn-gold:hover{background:var(--cream)}
+.aliyot{list-style:none;border-top:1px solid rgba(252,247,239,.18)}
+.aliyot li{display:grid;grid-template-columns:110px 1fr auto;gap:var(--s4);align-items:center;padding:var(--s4) 0;border-bottom:1px solid rgba(252,247,239,.18);font-size:15px}
+.aliyot .day{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#a9b2c4}
+.aliyot .bar{height:2px;background:rgba(252,247,239,.15);position:relative;overflow:hidden}
+.aliyot .bar i{position:absolute;inset:0;background:var(--gold-l);transform-origin:left;transform:scaleX(var(--p,0))}
+.aliyot .done{color:var(--gold-l)}
+.aliyot li.today{color:#fff}
+.aliyot li.today .day{color:var(--gold-l)}
+
+/* Week strip */
+.week{display:grid;grid-template-columns:repeat(7,1fr);border:1px solid var(--border);background:var(--bg)}
+.week > div{padding:var(--s6) var(--s4);border-right:1px solid var(--border);min-height:180px;display:flex;flex-direction:column;gap:6px;transition:background-color .2s var(--ease)}
+.week > div:last-child{border-right:0}
+.week > div:hover{background:var(--surface)}
+.week .d{font-family:var(--mono);font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.week .n{font-family:var(--serif);font-size:40px;line-height:1}
+.week .h{font-family:var(--heb);color:var(--primary);font-size:15px}
+.week .e{margin-top:auto;font-size:13px;color:var(--text-2)}
+.week .now{background:var(--surface);box-shadow:inset 0 3px 0 var(--primary)}
+.week .shab{background:var(--text);color:var(--bg)}
+.week .shab:hover{background:var(--text)}
+.week .shab .h{color:var(--gold-l)}
+.week .shab .d,.week .shab .e{color:#d5ccbd}
+.countdown{display:grid;grid-template-columns:auto 1fr auto;gap:var(--s8);align-items:center;margin-top:var(--s8);padding:var(--s8);background:var(--surface)}
+.countdown .big{font-family:var(--serif);font-size:72px;line-height:1;color:var(--primary)}
+.countdown h3{font-size:28px}
+.countdown p{color:var(--text-2);font-size:15px}
+.menorah{display:flex;gap:10px;align-items:flex-end;height:64px}
+.menorah span{width:6px;background:var(--secondary);height:40px;border-radius:1px;position:relative}
+.menorah span.sh{height:54px}
+.menorah span.lit::before{content:"";position:absolute;left:50%;top:-14px;margin-left:-4px;width:8px;height:12px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;background:radial-gradient(circle at 50% 70%,#fff3c4,#e9a73c 60%,#c4651c)}
+
+/* On this day */
+.history{display:grid;grid-template-columns:7fr 5fr;gap:var(--s12);align-items:start}
+.events{list-style:none}
+.events li{display:grid;grid-template-columns:140px 1fr;gap:var(--s6);padding:var(--s8) 0;border-bottom:1px solid var(--border)}
+.events li:first-child{padding-top:0}
+.events .yr{font-family:var(--serif);font-size:34px;color:var(--primary);line-height:1}
+.events .yr small{display:block;font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.06em;margin-top:6px}
+.events h4{font-size:26px;margin-bottom:var(--s2)}
+.events p{color:var(--text-2);max-width:520px}
+.side-photo{position:sticky;top:80px}
+.side-photo img{width:100%;aspect-ratio:3/4;object-fit:cover;filter:sepia(.35)}
+.side-photo figcaption{font-size:13px;color:var(--muted);margin-top:var(--s3);font-style:italic;font-family:var(--serif)}
+
+/* Topics */
+.topics{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--text)}
+.topic{padding:var(--s8) var(--s6) var(--s8) 0;border-right:1px solid var(--border);margin-right:var(--s6)}
+.topic:last-child{border-right:0;margin-right:0}
+.topic .ic{width:36px;height:36px;color:var(--primary);margin-bottom:var(--s6)}
+.topic h3{font-size:28px;margin-bottom:var(--s4)}
+.topic ul{list-style:none}
+.topic li a{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px dotted var(--border);color:var(--text-2);font-size:15px;transition:color .2s var(--ease)}
+.topic li a:hover{color:var(--primary)}
+.topic li a span{font-family:var(--mono);font-size:11px;color:var(--muted)}
+
+/* Diptych */
+.diptych{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--text);border-bottom:1px solid var(--text)}
+.diptych > div{padding:var(--s16) var(--s12) var(--s16) 0}
+.diptych > div + div{padding:var(--s16) 0 var(--s16) var(--s12);border-left:1px solid var(--border)}
+.diptych h2{font-size:clamp(34px,3.6vw,48px);margin:var(--s4) 0}
+.diptych p{color:var(--text-2);max-width:440px;margin-bottom:var(--s6)}
+.diptych .mono{color:var(--primary)}
+.field{display:flex;border-bottom:1px solid var(--text);margin-bottom:var(--s4)}
+.field input,.field textarea{flex:1;border:0;background:none;font:inherit;font-family:var(--serif);font-size:22px;padding:var(--s3) 0;color:var(--text);outline:none;resize:none;min-width:0}
+.field input::placeholder,.field textarea::placeholder{color:var(--muted);font-style:italic}
+.examples{display:flex;flex-direction:column;gap:6px;margin-bottom:var(--s6)}
+.examples button{text-align:left;font-family:var(--serif);font-style:italic;font-size:17px;color:var(--text-2);transition:color .2s var(--ease)}
+.examples button:hover{color:var(--primary)}
+.examples button::before{content:"\201C"}
+.examples button::after{content:"\201D"}
+.near{list-style:none;margin-top:var(--s6)}
+.near li{display:grid;grid-template-columns:1fr auto;padding:var(--s3) 0;border-bottom:1px solid var(--border);font-size:15px}
+.near li span{font-family:var(--mono);font-size:12px;color:var(--muted)}
+
+/* Newsletter */
+.letter{text-align:center;padding:var(--s24) 0}
+.letter .seal{width:64px;height:64px;margin:0 auto var(--s6);color:var(--primary)}
+.letter h2{font-size:clamp(38px,5vw,64px);max-width:760px;margin:0 auto var(--s4);font-weight:400}
+.letter h2 em{color:var(--primary)}
+.letter p{color:var(--text-2);margin-bottom:var(--s8)}
+.letter form{display:flex;max-width:520px;margin:0 auto;border-bottom:1px solid var(--text)}
+.letter input{flex:1;border:0;background:none;font:inherit;font-family:var(--serif);font-size:20px;padding:var(--s3) 0;outline:none;color:var(--text);min-width:0}
+.letter label.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* Footer */
+footer{background:var(--text);color:#d5ccbd;padding:var(--s16) 0 var(--s8);overflow:hidden}
+.foot{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s8);padding-bottom:var(--s12)}
+.foot h5{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold-l);margin-bottom:var(--s4);font-weight:400}
+.foot ul{list-style:none}
+.foot li a{display:block;padding:4px 0;font-size:15px;transition:color .2s var(--ease)}
+.foot li a:hover{color:#fff}
+.giant{font-family:var(--serif);font-size:clamp(80px,17vw,250px);line-height:.85;color:var(--bg);letter-spacing:-.04em;white-space:nowrap}
+.giant span{color:var(--primary)}
+.legal{display:flex;justify-content:space-between;gap:var(--s4);flex-wrap:wrap;padding-top:var(--s6);border-top:1px solid rgba(252,247,239,.15);font-size:13px;color:#a39a8b;margin-top:var(--s8)}
+
+/* Search overlay */
+.overlay{position:fixed;inset:0;background:rgba(252,247,239,.97);z-index:100;display:none;padding:var(--s24) var(--s8)}
+.overlay.open{display:block}
+.overlay .inner{max-width:880px;margin:0 auto}
+.overlay input{width:100%;border:0;border-bottom:1px solid var(--text);background:none;font-family:var(--serif);font-size:clamp(32px,5vw,56px);padding:var(--s3) 0;outline:none;color:var(--text)}
+.overlay .cols{display:grid;grid-template-columns:1fr 1fr;gap:var(--s12);margin-top:var(--s12)}
+.overlay h5{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:var(--s3);font-weight:400}
+.overlay li{list-style:none}
+.overlay li a{display:block;font-family:var(--serif);font-size:22px;padding:6px 0}
+.overlay li a:hover{color:var(--primary)}
+.overlay .close{position:absolute;top:var(--s8);right:var(--s8)}
+
+.drawer{position:fixed;inset:0;background:var(--bg);z-index:90;display:none;padding:var(--s8) var(--s6);overflow-y:auto}
+.drawer.open{display:block}
+.drawer a{display:block;font-family:var(--serif);font-size:32px;padding:var(--s3) 0;border-bottom:1px solid var(--border)}
+
+@media (prefers-reduced-motion:reduce){.flame,.menorah span.lit::before{animation:none}*{transition-duration:0s!important}}
+
+@media (max-width:1024px){
+  .poster .wrap,.index,.band-grid,.history,.diptych{grid-template-columns:1fr}
+  .sec-head{grid-template-columns:1fr}
+  .topics{grid-template-columns:1fr 1fr}
+  .topic:nth-child(2){border-right:0;margin-right:0}
+  .week{grid-template-columns:repeat(4,1fr)}
+  .week > div:nth-child(4){border-right:0}
+  .week > div:nth-child(-n+4){border-bottom:1px solid var(--border)}
+  .diptych > div,.diptych > div + div{padding:var(--s12) 0;border-left:0}
+  .diptych > div + div{border-top:1px solid var(--border)}
+  .side-photo{position:static}
+  .poster{height:auto;min-height:0}
+  .poster .wrap{padding-top:var(--s24);padding-bottom:var(--s12)}
+  .foot{grid-template-columns:1fr 1fr}
+}
+@media (max-width:720px){
+  .wrap{padding:0 var(--s4)}
+  .topline nav a:not(:last-child){display:none}
+  .sections{display:none}
+  .burger{display:grid}
+  .mast-left .mono{display:none}
+  .mast-actions .icon-btn.theme{display:none}
+  .wordmark{font-size:40px}
+  .masthead .tag{font-size:10px}
+  .sec,.band,.letter{padding:var(--s16) 0}
+  .list a{grid-template-columns:36px 1fr}
+  .list .type{display:none}
+  .list h4{font-size:21px}
+  .aliyot li{grid-template-columns:90px 1fr auto}
+  .week{grid-template-columns:repeat(2,1fr)}
+  .week > div{border-bottom:1px solid var(--border);min-height:140px}
+  .week > div:nth-child(2n){border-right:0}
+  .week > div:nth-child(4){border-right:0}
+  .week > div:nth-child(3),.week > div:nth-child(5){border-right:1px solid var(--border)}
+  .countdown{grid-template-columns:1fr;gap:var(--s4)}
+  .events li{grid-template-columns:1fr;gap:var(--s3)}
+  .topics{grid-template-columns:1fr}
+  .topic{border-right:0;margin-right:0;border-bottom:1px solid var(--border)}
+  .overlay .cols{grid-template-columns:1fr}
+  .ledger{padding:var(--s6)}
+}
+</style>
+</head>
+<body>
+
+<div class="notice">Unofficial redesign concept for a job proposal. Not affiliated with or endorsed by Chabad.org. All content is placeholder.</div>
+
+<div class="wrap">
+  <div class="topline">
+    <span class="mono">Thu 22 Oct 2026 &nbsp;·&nbsp; <span class="heb" style="text-transform:none;letter-spacing:0">י״א חשון תשפ״ז</span></span>
+    <nav aria-label="Utility">
+      <a href="#ask">Ask the Rabbi</a><a href="#center">Find a Center</a><a href="#letter">Newsletters</a><a href="#">Sign in</a>
+    </nav>
+  </div>
+  <header class="masthead">
+    <div class="mast-left"><span class="mono" style="color:var(--muted)">Est. 1993</span></div>
+    <a href="#" class="wordmark" aria-label="Chabad.org home">Chabad<span class="dot">.</span>org</a>
+    <div class="tag mono">Judaism, Torah &amp; Jewish life, every day</div>
+    <div class="mast-actions">
+      <button class="icon-btn" onclick="openSearch()" aria-label="Search (Ctrl K)">
+        <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      </button>
+      <a href="#" class="btn btn-bronze" style="padding:10px 18px">Donate</a>
+      <button class="icon-btn burger" onclick="toggleDrawer(true)" aria-label="Open menu">
+        <svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </header>
+</div>
+<nav class="sections" aria-label="Sections">
+  <a href="#today">Today</a><a href="#parsha">Parshah</a><a href="#calendar">Calendar</a><a href="#history">History</a><a href="#topics">Practice</a><a href="#topics">Learning</a><a href="#topics">Family</a><a href="#ask">Ask</a>
+</nav>
+
+<main>
+<section class="poster" aria-label="Featured story">
+  <img class="poster-img" src="assets/photos/torah-closeup.jpg" alt="Close view of hand-lettered Hebrew columns on a Torah scroll" width="1280" height="960">
+  <div class="wrap">
+    <div class="hero-copy">
+      <span class="kicker mono">Prayer in Judaism · Featured</span>
+      <h1 class="hero-title">Nobody knows who wrote <em>Adon Olam.</em> Every synagogue sings it anyway.</h1>
+      <p>Ten lines, a thousand years, and no signature. We follow the hymn from medieval Spain to the end of your Shabbat service.</p>
+      <div class="by">
+        <a href="#" class="btn btn-line">Read the story</a>
+        <span class="mono">By Yehuda Shurpin · 8 min read</span>
+      </div>
+    </div>
+    <aside class="ledger" aria-label="This Shabbat">
+      <span class="mono">This Shabbat</span>
+      <h3>Lech&#8209;Lecha <span class="heb-big">לך לך</span></h3>
+      <table>
+        <tr><td><span class="flame" aria-hidden="true"></span><span class="flame" aria-hidden="true" style="animation-delay:.5s"></span> Candle lighting, Fri</td><td>5:42 pm</td></tr>
+        <tr><td>Shabbat ends, Sat</td><td>6:41 pm</td></tr>
+      </table>
+      <div class="loc"><span>New York, NY</span><a href="#" class="link">Change city</a></div>
+    </aside>
+  </div>
+</section>
+
+<section class="sec" id="today">
+  <div class="wrap">
+    <div class="sec-head" data-reveal>
+      <span class="num">No. 01, the daily index</span>
+      <h2>Today on Chabad.org</h2>
+      <a href="#" class="link">All of today's reading</a>
+    </div>
+    <div class="index">
+      <figure class="feature-photo" data-reveal>
+        <img src="assets/photos/torah-dedication.jpg" alt="Elders and young men carrying a newly written Torah scroll under a canopy" width="1920" height="1280" loading="lazy">
+        <figcaption>
+          <span class="mono">Jewish life · Photo essay</span>
+          <h3>Albany, Canaan, or wherever you find yourself</h3>
+        </figcaption>
+      </figure>
+      <ol class="list" data-reveal-group>
+        <li><a href="#"><div><h4>What is a bris? The four-minute explainer</h4><div class="meta"><b>Hershey Sufrin</b><span>Video</span></div></div><span class="type">4:12 watch</span></a></li>
+        <li><a href="#"><div><h4>Abraham, a father to all nations</h4><div class="meta"><b>Shalom Paltiel</b><span>The Rebbe's teachings</span></div></div><span class="type">12 min read</span></a></li>
+        <li><a href="#"><div><h4>Who was Keturah? Take the Abraham's family quiz</h4><div class="meta"><b>Menachem Posner</b><span>Quizzes</span></div></div><span class="type">10 questions</span></a></li>
+        <li><a href="#"><div><h4>Leaving home to find yourself</h4><div class="meta"><b>Sarah Esther Crispe</b><span>Parshah podcast</span></div></div><span class="type">22 min listen</span></a></li>
+        <li><a href="#"><div><h4>Why a mezuzah goes on the right side of the door</h4><div class="meta"><b>Yehuda Shurpin</b><span>Ask the Rabbi</span></div></div><span class="type">5 min read</span></a></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="parsha">
+  <div class="ghost heb" aria-hidden="true">לך לך</div>
+  <div class="wrap band-grid">
+    <div data-reveal>
+      <span class="mono">No. 02, this week's Torah portion</span>
+      <h2>Lech&#8209;Lecha <span class="heb">לך לך</span></h2>
+      <p>Genesis 12:1 to 17:27. Abraham is told to leave his land, his birthplace and his father's house, with no destination named. Read it in seven daily portions.</p>
+      <div class="actions">
+        <a href="#" class="btn btn-gold">Read today's portion</a>
+        <a href="#" class="btn btn-line">Commentary &amp; video</a>
+      </div>
+    </div>
+    <ol class="aliyot" data-reveal-group aria-label="Daily portions this week">
+      <li><span class="day">Sun · 1st</span><span class="bar"><i style="--p:1"></i></span><span class="done">Read</span></li>
+      <li><span class="day">Mon · 2nd</span><span class="bar"><i style="--p:1"></i></span><span class="done">Read</span></li>
+      <li><span class="day">Tue · 3rd</span><span class="bar"><i style="--p:1"></i></span><span class="done">Read</span></li>
+      <li><span class="day">Wed · 4th</span><span class="bar"><i style="--p:1"></i></span><span class="done">Read</span></li>
+      <li class="today"><span class="day">Thu · 5th</span><span class="bar"><i style="--p:.35"></i></span><span>Today</span></li>
+      <li><span class="day">Fri · 6th</span><span class="bar"><i></i></span><span style="color:#a9b2c4">Fri</span></li>
+      <li><span class="day">Sat · 7th</span><span class="bar"><i></i></span><span style="color:#a9b2c4">Shabbat</span></li>
+    </ol>
+  </div>
+</section>
+
+<section class="sec" id="calendar">
+  <div class="wrap">
+    <div class="sec-head" data-reveal>
+      <span class="num">No. 03, the week ahead</span>
+      <h2>Calendar &amp; times</h2>
+      <a href="#" class="link">Full zmanim for New York</a>
+    </div>
+    <div class="week" data-reveal-group>
+      <div><span class="d">Sun</span><span class="n">18</span><span class="h">ז׳ חשון</span><span class="e">Rain prayer begins in Israel</span></div>
+      <div><span class="d">Mon</span><span class="n">19</span><span class="h">ח׳ חשון</span><span class="e">Sunset 6:03 pm</span></div>
+      <div><span class="d">Tue</span><span class="n">20</span><span class="h">ט׳ חשון</span><span class="e">Sunset 6:02 pm</span></div>
+      <div><span class="d">Wed</span><span class="n">21</span><span class="h">י׳ חשון</span><span class="e">Sunset 6:00 pm</span></div>
+      <div class="now"><span class="d">Thu · today</span><span class="n">22</span><span class="h">י״א חשון</span><span class="e">Yahrzeit of Rachel</span></div>
+      <div><span class="d">Fri</span><span class="n">23</span><span class="h">י״ב חשון</span><span class="e">Candles 5:42 pm</span></div>
+      <div class="shab"><span class="d">Shabbat</span><span class="n">24</span><span class="h">י״ג חשון</span><span class="e">Ends 6:41 pm</span></div>
+    </div>
+    <div class="countdown" data-reveal>
+      <div class="big" id="days">43</div>
+      <div><h3>days until Chanukah</h3><p>First candle Friday evening, December 4. Order a menorah kit or find a public lighting near you.</p></div>
+      <div class="menorah" aria-hidden="true"><span class="lit"></span><span></span><span></span><span></span><span class="sh lit"></span><span></span><span></span><span></span><span></span></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="history" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head" data-reveal>
+      <span class="num">No. 04, on this day</span>
+      <h2>11 Cheshvan in Jewish history</h2>
+      <a href="#" class="link">Browse the archive</a>
+    </div>
+    <div class="history">
+      <ol class="events" data-reveal-group>
+        <li><div class="yr">1553<small>BCE · 2208 from creation</small></div><div><h4>The matriarch Rachel passes away</h4><p>She dies giving birth to Benjamin on the road to Bethlehem and is buried by the wayside, where her tomb still draws visitors today.</p></div></li>
+        <li><div class="yr">2105<small>BCE · 1656 from creation</small></div><div><h4>Methuselah, the longest life</h4><p>The longest-lived person recorded in the Torah dies at 969, days before the Flood begins.</p></div></li>
+        <li><div class="yr">1797<small>CE · 5558</small></div><div><h4>Rabbi Nachum of Chernobyl</h4><p>A student of the Baal Shem Tov and the Maggid of Mezeritch, and founder of the Chernobyl Chassidic dynasty.</p></div></li>
+      </ol>
+      <figure class="side-photo" data-reveal>
+        <img src="assets/photos/synagogue-interior-1.jpg" alt="Interior of an old stone synagogue with a carved wooden bimah" width="600" height="856" loading="lazy">
+        <figcaption>From the archive: a historic Jerusalem synagogue interior.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="topics" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head" data-reveal>
+      <span class="num">No. 05, the library</span>
+      <h2>Explore by subject</h2>
+      <a href="#" class="link">Site index A to Z</a>
+    </div>
+    <div class="topics" data-reveal-group>
+      <div class="topic">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M9 3h6l-1 4h-4zM10 7v4M14 7v4M7 11h10v2a5 5 0 0 1-10 0z"/><path d="M12 18v3M8 21h8"/></svg>
+        <h3>Practice</h3>
+        <ul><li><a href="#">Shabbat <span>412</span></a></li><li><a href="#">Kosher <span>286</span></a></li><li><a href="#">Prayer <span>530</span></a></li><li><a href="#">Mezuzah &amp; tefillin <span>174</span></a></li></ul>
+      </div>
+      <div class="topic">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M4 4h6a2 2 0 0 1 2 2v14a2 2 0 0 0-2-2H4zM20 4h-6a2 2 0 0 0-2 2v14a2 2 0 0 1 2-2h6z"/></svg>
+        <h3>Learning</h3>
+        <ul><li><a href="#">Weekly Parshah <span>54</span></a></li><li><a href="#">Daily Tanya <span>365</span></a></li><li><a href="#">Talmud <span>2.7k</span></a></li><li><a href="#">Kabbalah <span>310</span></a></li></ul>
+      </div>
+      <div class="topic">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M3 11 12 4l9 7M5 10v10h14V10"/><path d="M10 20v-5h4v5"/></svg>
+        <h3>Family</h3>
+        <ul><li><a href="#">Parenting <span>220</span></a></li><li><a href="#">Recipes <span>1.1k</span></a></li><li><a href="#">Kids' corner <span>640</span></a></li><li><a href="#">Life cycle <span>198</span></a></li></ul>
+      </div>
+      <div class="topic">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><path d="M12 3l2.3 5.6L20 9l-4.4 3.8L17 19l-5-3-5 3 1.4-6.2L4 9l5.7-.4z"/></svg>
+        <h3>Inspiration</h3>
+        <ul><li><a href="#">Stories <span>3.4k</span></a></li><li><a href="#">Video <span>8k</span></a></li><li><a href="#">Podcasts <span>46</span></a></li><li><a href="#">Music <span>120</span></a></li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" aria-label="Ask and find">
+  <div class="diptych">
+    <div id="ask" data-reveal>
+      <span class="mono">Ask the Rabbi</span>
+      <h2>A real rabbi reads every question.</h2>
+      <p>Private, free, and answered by a person. Ask about practice, belief, or the thing you have always wondered about.</p>
+      <div class="field"><label for="q" class="sr" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Your question</label><textarea id="q" rows="2" placeholder="Type your question here"></textarea></div>
+      <div class="examples">
+        <button type="button" onclick="document.getElementById('q').value=this.textContent">How long do I wait between meat and dairy?</button>
+        <button type="button" onclick="document.getElementById('q').value=this.textContent">Can I say Kaddish for a friend?</button>
+      </div>
+      <a href="#" class="btn btn-dark">Send privately</a>
+    </div>
+    <div id="center" data-reveal>
+      <span class="mono">Find a Center</span>
+      <h2>A Shabbat table, wherever you land.</h2>
+      <p>Classes, holiday services and a warm meal, in your city or the one you are visiting next week.</p>
+      <div class="field"><label for="loc" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">City or zip code</label><input id="loc" placeholder="City or zip code" autocomplete="postal-code"><button class="btn btn-dark" style="padding:8px 16px">Search</button></div>
+      <ul class="near">
+        <li>Chabad of the Upper West Side<span>0.8 mi</span></li>
+        <li>Chabad Midtown<span>2.1 mi</span></li>
+        <li>Chabad of Park Slope<span>6.4 mi</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="letter" id="letter" data-reveal>
+  <div class="wrap">
+    <svg class="seal" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true"><rect x="6" y="14" width="52" height="36"/><path d="M6 14l26 20 26-20"/><circle cx="32" cy="34" r="6" fill="currentColor" stroke="none"/></svg>
+    <h2>The Thursday letter: one parshah idea, <em>one story</em>, one recipe.</h2>
+    <p>Arrives before Shabbat. Unsubscribe whenever you like.</p>
+    <form onsubmit="event.preventDefault();this.querySelector('button').textContent='Subscribed'">
+      <label class="sr" for="em">Email address</label>
+      <input id="em" type="email" placeholder="your@email.com" autocomplete="email" required>
+      <button class="btn btn-bronze">Subscribe</button>
+    </form>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div><h5>Practice</h5><ul><li><a href="#">Shabbat</a></li><li><a href="#">Holidays</a></li><li><a href="#">Kosher</a></li><li><a href="#">Prayer</a></li></ul></div>
+      <div><h5>Learn</h5><ul><li><a href="#">Parshah</a></li><li><a href="#">Daily study</a></li><li><a href="#">The Rebbe</a></li><li><a href="#">Courses</a></li></ul></div>
+      <div><h5>Connect</h5><ul><li><a href="#">Find a Center</a></li><li><a href="#">Ask the Rabbi</a></li><li><a href="#">Events</a></li><li><a href="#">Newsletters</a></li></ul></div>
+      <div><h5>About</h5><ul><li><a href="#">Mission</a></li><li><a href="#">Contact</a></li><li><a href="#">Careers</a></li><li><a href="#">Donate</a></li></ul></div>
+    </div>
+    <div class="giant" aria-hidden="true">Chabad<span>.</span>org</div>
+    <div class="legal"><span>Unofficial design concept. Not affiliated with Chabad.org.</span><span>Preview only, placeholder content. <a href="../" style="text-decoration:underline">See version 1</a></span></div>
+  </div>
+</footer>
+
+<div class="overlay" id="search" role="dialog" aria-modal="true" aria-label="Search">
+  <button class="icon-btn close" onclick="closeSearch()" aria-label="Close search">
+    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+  </button>
+  <div class="inner">
+    <label for="sq" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Search</label>
+    <input id="sq" placeholder="Search the library">
+    <div class="cols">
+      <div><h5>People are reading</h5><ul><li><a href="#">Chanukah 2026 dates</a></li><li><a href="#">How to say Kaddish</a></li><li><a href="#">Lech-Lecha in brief</a></li></ul></div>
+      <div><h5>Go directly to</h5><ul><li><a href="#calendar">Jewish calendar</a></li><li><a href="#">Zmanim</a></li><li><a href="#center">Find a Center</a></li></ul></div>
+    </div>
+  </div>
+</div>
+
+<nav class="drawer" id="drawer" aria-label="Mobile">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--s6)"><span class="mono">Menu</span><button class="icon-btn" onclick="toggleDrawer(false)" aria-label="Close menu"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>
+  <a href="#today" onclick="toggleDrawer(false)">Today</a><a href="#parsha" onclick="toggleDrawer(false)">Parshah</a><a href="#calendar" onclick="toggleDrawer(false)">Calendar</a><a href="#history" onclick="toggleDrawer(false)">History</a><a href="#topics" onclick="toggleDrawer(false)">Library</a><a href="#ask" onclick="toggleDrawer(false)">Ask the Rabbi</a>
+</nav>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script>
+function openSearch(){document.getElementById('search').classList.add('open');setTimeout(()=>document.getElementById('sq').focus(),30)}
+function closeSearch(){document.getElementById('search').classList.remove('open')}
+function toggleDrawer(o){document.getElementById('drawer').classList.toggle('open',o)}
+document.addEventListener('keydown',e=>{if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){e.preventDefault();openSearch()}if(e.key==='Escape'){closeSearch();toggleDrawer(false)}});
+const d=Math.ceil((new Date('2026-12-04T17:00:00')-new Date())/864e5);if(d>0)document.getElementById('days').textContent=d;
+
+if(window.gsap&&window.ScrollTrigger){
+  gsap.registerPlugin(ScrollTrigger);
+  const mm=gsap.matchMedia();
+  mm.add("(prefers-reduced-motion: no-preference)",()=>{
+    // hero entrance: sequenced, once
+    gsap.timeline({defaults:{ease:"power3.out"}})
+      .from(".poster-img",{scale:1.08,duration:1.6,ease:"power2.out"})
+      .from(".hero-copy > *",{y:28,opacity:0,duration:.8,stagger:.1},"<.2")
+      .from(".ledger",{y:40,opacity:0,duration:.8},"<.3");
+    // poster parallax scrub
+    gsap.to(".poster-img",{yPercent:8,ease:"none",scrollTrigger:{trigger:".poster",start:"top top",end:"bottom top",scrub:true}});
+    // ghost Hebrew drifts across the parsha band
+    gsap.fromTo(".band .ghost",{xPercent:10},{xPercent:-12,ease:"none",scrollTrigger:{trigger:".band",start:"top bottom",end:"bottom top",scrub:true}});
+    // aliyot progress fills on enter
+    gsap.from(".aliyot .bar i",{scaleX:0,duration:.9,stagger:.08,ease:"power2.out",scrollTrigger:{trigger:".aliyot",start:"top 80%"}});
+    gsap.utils.toArray("[data-reveal]").forEach(el=>gsap.from(el,{y:24,opacity:0,duration:.7,ease:"power2.out",scrollTrigger:{trigger:el,start:"top 88%"}}));
+    gsap.utils.toArray("[data-reveal-group]").forEach(g=>gsap.from(g.children,{y:20,opacity:0,duration:.6,stagger:.07,ease:"power2.out",scrollTrigger:{trigger:g,start:"top 85%"}}));
+  });
+}
+</script>
+</body>
+</html>
