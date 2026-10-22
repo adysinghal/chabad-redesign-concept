@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chabad.org Redesign Concept</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#faf7f2; --surface:#ffffff; --surface-2:#f3eee5; --ink:#1a1f2e; --ink-2:#4a5163; --muted:#7a8091;
+  --line:#e7e0d4; --navy:#14305c; --navy-2:#1d4585; --gold:#c99a3b; --gold-soft:#f5e9cf; --accent:#2f6fd6;
+  --shadow:0 1px 2px rgba(20,30,50,.05),0 8px 24px rgba(20,30,50,.06);
+  --radius:16px;
+}
+:root[data-theme="dark"]{
+  --bg:#0f1320; --surface:#171c2c; --surface-2:#1e2438; --ink:#eef0f6; --ink-2:#b9bfd0; --muted:#8a91a6;
+  --line:#2a3148; --navy:#9fc0ff; --navy-2:#c3d7ff; --gold:#e2b55a; --gold-soft:#2e2717; --accent:#7aa8ff;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.35);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f1320; --surface:#171c2c; --surface-2:#1e2438; --ink:#eef0f6; --ink-2:#b9bfd0; --muted:#8a91a6;
+    --line:#2a3148; --navy:#9fc0ff; --navy-2:#c3d7ff; --gold:#e2b55a; --gold-soft:#2e2717; --accent:#7aa8ff;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.35);
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+h1,h2,h3,h4{font-family:Fraunces,Georgia,serif;font-weight:600;letter-spacing:-.01em;line-height:1.15}
+.wrap{max-width:1240px;margin:0 auto;padding:0 24px}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:999px;font-weight:600;font-size:14px;transition:.2s}
+.btn-primary{background:var(--navy);color:var(--bg)}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:var(--shadow)}
+.btn-gold{background:var(--gold);color:#1a1f2e}
+.btn-ghost{border:1px solid var(--line);background:var(--surface)}
+.btn-ghost:hover{border-color:var(--gold)}
+
+/* Utility bar */
+.util{background:var(--navy);color:#e9eefb;font-size:13px}
+:root[data-theme="dark"] .util{background:#0a0d17}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .util{background:#0a0d17}}
+.util .wrap{display:flex;justify-content:space-between;align-items:center;height:38px;gap:16px}
+.util .date{display:flex;gap:10px;align-items:center;white-space:nowrap;overflow:hidden}
+.util .date b{color:var(--gold)}
+.util nav{display:flex;gap:20px;align-items:center}
+.util nav a{opacity:.85}.util nav a:hover{opacity:1}
+
+/* Header */
+header.main{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+header.main .wrap{display:flex;align-items:center;gap:28px;height:72px}
+.logo{display:flex;align-items:center;gap:10px;font-family:Fraunces,serif;font-weight:700;font-size:22px;color:var(--navy)}
+.logo-mark{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--navy),var(--navy-2));display:grid;place-items:center;color:var(--gold);font-size:18px}
+.logo small{display:block;font-family:Inter;font-weight:500;font-size:11px;color:var(--muted);letter-spacing:.04em}
+.mainnav{display:flex;gap:4px;flex:1}
+.mainnav > div{position:relative}
+.mainnav > div > a{display:block;white-space:nowrap;padding:10px 12px;border-radius:10px;font-weight:500;font-size:15px;color:var(--ink-2)}
+.mainnav > div:hover > a{background:var(--surface-2);color:var(--ink)}
+.mega{position:absolute;top:100%;left:0;padding-top:10px;opacity:0;visibility:hidden;transform:translateY(6px);transition:.18s}
+.mainnav > div:hover .mega{opacity:1;visibility:visible;transform:none}
+.mega-inner{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px;display:grid;grid-template-columns:repeat(2,200px) 220px;gap:20px}
+.mega h5{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;font-family:Inter}
+.mega ul{list-style:none}.mega li a{display:block;padding:5px 0;font-size:14px;color:var(--ink-2)}.mega li a:hover{color:var(--accent)}
+.mega-feat{background:var(--gold-soft);border-radius:12px;padding:16px}
+.mega-feat h4{font-size:17px;margin:6px 0}
+.mega-feat p{font-size:13px;color:var(--ink-2)}
+.hdr-actions{display:flex;gap:10px;align-items:center}
+.search-btn{display:flex;align-items:center;gap:8px;padding:9px 14px;border:1px solid var(--line);border-radius:999px;color:var(--muted);font-size:14px;background:var(--surface);white-space:nowrap}
+.search-btn kbd{margin-left:auto;font-size:11px;border:1px solid var(--line);border-radius:6px;padding:1px 6px}
+.icon-btn{width:40px;height:40px;border-radius:999px;display:grid;place-items:center;border:1px solid var(--line);background:var(--surface)}
+.burger{display:none}
+
+/* Hero */
+.hero{padding:40px 0 24px}
+.hero-grid{display:grid;grid-template-columns:1.6fr 1fr;gap:24px}
+.hero-main{position:relative;border-radius:24px;overflow:hidden;min-height:460px;display:flex;align-items:flex-end;color:#fff;
+  background:radial-gradient(circle at 75% 30%,#f2c66d 0,transparent 35%),linear-gradient(135deg,#0e5a63 0%,#163d6e 60%,#14305c 100%)}
+.hero-main svg.art{position:absolute;right:-20px;top:0;height:100%;opacity:.95}
+.hero-main .content{position:relative;padding:40px;max-width:560px;background:linear-gradient(to top,rgba(10,20,40,.7),transparent);width:100%}
+.hero-main .eyebrow{color:#f5d48b}
+.hero-main h1{font-size:44px;margin:12px 0}
+.hero-main p{opacity:.9;font-size:16px;margin-bottom:22px}
+.hero-main .meta{display:flex;gap:16px;align-items:center;font-size:13px;opacity:.85}
+.hero-side{display:grid;gap:16px;grid-template-rows:auto 1fr}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+.shabbat{padding:24px;background:linear-gradient(160deg,var(--navy) 0%,#22407a 100%);color:#fff;border:0;position:relative;overflow:hidden}
+:root[data-theme="dark"] .shabbat{background:linear-gradient(160deg,#1b2a4d,#25365e)}
+.shabbat .candles{position:absolute;right:20px;top:18px;display:flex;gap:10px}
+.flame{width:10px;height:16px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;background:radial-gradient(circle at 50% 70%,#fff6c8,#f5b942 60%,#e27b22);animation:flick 1.6s infinite alternate;margin:0 auto}
+.candle{width:12px;height:46px;background:linear-gradient(#fff,#e9e2d3);border-radius:3px;margin-top:3px}
+@keyframes flick{0%{transform:scale(1) rotate(-2deg)}100%{transform:scale(1.08,1.15) rotate(2deg)}}
+.shabbat .eyebrow{color:#f5d48b}
+.shabbat h3{font-size:26px;margin:6px 0 2px}
+.shabbat .loc{font-size:13px;opacity:.8;display:flex;gap:6px;align-items:center}
+.times{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0}
+.times div{background:rgba(255,255,255,.1);border-radius:12px;padding:12px}
+.times small{font-size:12px;opacity:.75;display:block}
+.times strong{font-size:22px;font-family:Fraunces}
+.shabbat .btn{background:rgba(255,255,255,.15);color:#fff;padding:9px 16px;font-size:13px}
+.quick{padding:20px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.quick .q{padding:14px;border-radius:12px;background:var(--surface-2);transition:.2s}
+.quick .q:hover{background:var(--gold-soft);transform:translateY(-2px)}
+.quick .q small{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.quick .q h4{font-size:18px;margin:4px 0 2px}
+.quick .q span{font-size:12.5px;color:var(--ink-2)}
+.countdown{display:flex;gap:6px;margin-top:6px}
+.countdown b{font-family:Fraunces;font-size:16px;color:var(--navy)}
+
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .shabbat{background:linear-gradient(160deg,#1b2a4d,#25365e)}:root:not([data-theme="light"]) .news{background:linear-gradient(135deg,#1b2a4d,#2a3d6a)}}
+/* Pillars */
+.pillars{padding:28px 0}
+.pill-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.pillar{padding:22px;border-radius:var(--radius);background:var(--surface);border:1px solid var(--line);transition:.25s;position:relative;overflow:hidden}
+.pillar:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:var(--gold)}
+.pillar .ic{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;margin-bottom:14px;background:var(--gold-soft);color:var(--gold)}
+.pillar h3{font-size:20px;margin-bottom:6px}
+.pillar p{font-size:14px;color:var(--ink-2);margin-bottom:12px}
+.pillar .tags{display:flex;flex-wrap:wrap;gap:6px}
+.pillar .tags span{font-size:12px;padding:4px 10px;border-radius:999px;background:var(--surface-2);color:var(--ink-2)}
+
+/* Section head */
+.sec{padding:48px 0}
+.sec-head{display:flex;justify-content:space-between;align-items:end;margin-bottom:24px;gap:16px}
+.sec-head h2{font-size:34px;margin-top:6px}
+.tabs{display:flex;gap:6px;background:var(--surface-2);padding:4px;border-radius:999px}
+.tabs button{padding:8px 16px;border-radius:999px;font-size:14px;font-weight:500;color:var(--ink-2)}
+.tabs button.on{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
+
+/* Articles */
+.art-grid{display:grid;grid-template-columns:2fr 1fr 1fr;grid-template-rows:auto auto;gap:20px}
+.art{overflow:hidden;display:flex;flex-direction:column;transition:.25s}
+.art:hover{transform:translateY(-4px)}
+.art .thumb{aspect-ratio:16/10;position:relative;overflow:hidden}
+.art.big{grid-row:span 2}
+.art.big .thumb{aspect-ratio:auto;flex:1;min-height:300px}
+.art .body{padding:18px 20px 20px}
+.art .cat{font-size:12px;font-weight:600;color:var(--accent);display:flex;gap:6px;align-items:center}
+.art h3{font-size:19px;margin:8px 0}
+.art.big h3{font-size:28px}
+.art p{font-size:14px;color:var(--ink-2)}
+.art .by{font-size:12.5px;color:var(--muted);margin-top:12px;display:flex;gap:8px;align-items:center}
+.avatar{width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--navy-2))}
+.play{position:absolute;inset:0;display:grid;place-items:center}
+.play span{width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.9);display:grid;place-items:center;box-shadow:0 8px 20px rgba(0,0,0,.2)}
+.badge{position:absolute;left:14px;top:14px;background:rgba(0,0,0,.55);color:#fff;font-size:11px;padding:4px 10px;border-radius:999px;backdrop-filter:blur(4px)}
+.t1{background:linear-gradient(135deg,#2b6cb0,#1a365d)}
+.t2{background:linear-gradient(135deg,#d69e2e,#9c4221)}
+.t3{background:linear-gradient(135deg,#2f855a,#22543d)}
+.t4{background:linear-gradient(135deg,#6b46c1,#322659)}
+.t5{background:linear-gradient(135deg,#c53030,#63171b)}
+.t6{background:linear-gradient(135deg,#0e7490,#164e63)}
+.thumb .big-type{position:absolute;inset:0;display:grid;place-items:center;font-family:Fraunces;font-size:64px;font-weight:700;color:rgba(255,255,255,.92);text-shadow:0 4px 20px rgba(0,0,0,.2)}
+.thumb .pattern{position:absolute;inset:0;opacity:.15;background-image:radial-gradient(#fff 1px,transparent 1px);background-size:16px 16px}
+
+/* Today in Judaism */
+.today{display:grid;grid-template-columns:1fr 1.4fr;gap:24px}
+.daily{padding:28px}
+.daily h3{font-size:24px;margin:6px 0 18px}
+.daily-list{display:grid;gap:10px}
+.daily-item{display:flex;gap:14px;align-items:center;padding:14px;border-radius:12px;background:var(--surface-2);transition:.2s}
+.daily-item:hover{background:var(--gold-soft)}
+.daily-item .ic{width:40px;height:40px;border-radius:10px;background:var(--surface);display:grid;place-items:center;color:var(--gold);flex-shrink:0}
+.daily-item b{display:block;font-size:15px}
+.daily-item small{color:var(--muted);font-size:13px}
+.daily-item .arr{margin-left:auto;color:var(--muted)}
+.history{padding:28px}
+.timeline{position:relative;margin-top:16px;padding-left:28px}
+.timeline:before{content:"";position:absolute;left:7px;top:6px;bottom:6px;width:2px;background:var(--line)}
+.tl{position:relative;padding-bottom:22px}
+.tl:before{content:"";position:absolute;left:-27px;top:5px;width:14px;height:14px;border-radius:50%;background:var(--surface);border:3px solid var(--gold)}
+.tl .yr{font-size:12px;font-weight:600;color:var(--gold);letter-spacing:.05em}
+.tl h4{font-size:18px;margin:2px 0 4px}
+.tl p{font-size:14px;color:var(--ink-2)}
+.tl a{font-size:13px;color:var(--accent);font-weight:600}
+
+/* Video strip */
+.videos{background:var(--navy);color:#fff;padding:56px 0;margin:24px 0}
+:root[data-theme="dark"] .videos{background:#0a0d17}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .videos{background:#0a0d17}}
+.videos .sec-head h2{color:#fff}
+.videos .eyebrow{color:#f5d48b}
+.vrow{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(260px,1fr);gap:18px;overflow-x:auto;padding-bottom:10px;scrollbar-width:thin}
+.vcard{border-radius:14px;overflow:hidden;background:rgba(255,255,255,.06);transition:.25s}
+.vcard:hover{background:rgba(255,255,255,.12)}
+.vcard .thumb{aspect-ratio:16/9;position:relative}
+.vcard .dur{position:absolute;right:10px;bottom:10px;background:rgba(0,0,0,.7);font-size:12px;padding:2px 8px;border-radius:6px}
+.vcard .b{padding:14px 16px}
+.vcard h4{font-size:16px;font-family:Inter;font-weight:600}
+.vcard small{opacity:.7;font-size:12.5px}
+
+/* Ask + center */
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.ask{padding:36px;background:var(--gold-soft);border:0;position:relative;overflow:hidden}
+.ask h2{font-size:32px;margin:8px 0 10px}
+.ask p{color:var(--ink-2);margin-bottom:20px;max-width:420px}
+.ask textarea{width:100%;border:1px solid var(--line);border-radius:12px;padding:14px;font:inherit;background:var(--surface);color:var(--ink);resize:none;height:90px;margin-bottom:12px}
+.ask .chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.ask .chips span{font-size:12.5px;padding:6px 12px;border-radius:999px;background:var(--surface);border:1px solid var(--line);cursor:pointer}
+.center{padding:36px;position:relative;overflow:hidden}
+.center h2{font-size:32px;margin:8px 0 10px}
+.center p{color:var(--ink-2);margin-bottom:20px}
+.loc-search{display:flex;gap:8px;background:var(--surface-2);padding:6px;border-radius:999px;border:1px solid var(--line)}
+.loc-search input{flex:1;border:0;background:none;padding:10px 14px;font:inherit;color:var(--ink);outline:none;min-width:0}
+.map{margin-top:20px;height:160px;border-radius:14px;background:var(--surface-2);position:relative;overflow:hidden}
+.map svg{width:100%;height:100%}
+.pin{position:absolute;width:14px;height:14px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 6px color-mix(in srgb,var(--gold) 25%,transparent);animation:pulse 2s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 12px color-mix(in srgb,var(--gold) 0%,transparent)}}
+.stat-row{display:flex;gap:24px;margin-top:18px}
+.stat-row b{font-family:Fraunces;font-size:26px;color:var(--navy);display:block}
+.stat-row small{color:var(--muted);font-size:12.5px}
+
+/* Newsletter */
+.news{margin:56px 0;padding:48px;border-radius:28px;background:linear-gradient(135deg,var(--navy),#2a4f8f);color:#fff;display:grid;grid-template-columns:1.2fr 1fr;gap:32px;align-items:center;position:relative;overflow:hidden}
+:root[data-theme="dark"] .news{background:linear-gradient(135deg,#1b2a4d,#2a3d6a)}
+.news h2{font-size:36px;margin:8px 0}
+.news .eyebrow{color:#f5d48b}
+.news p{opacity:.85}
+.news form{display:flex;gap:8px;background:rgba(255,255,255,.12);padding:6px;border-radius:999px}
+.news input{flex:1;background:none;border:0;padding:12px 16px;color:#fff;font:inherit;outline:none;min-width:0}
+.news input::placeholder{color:rgba(255,255,255,.6)}
+.news .opts{display:flex;gap:16px;margin-top:12px;font-size:13px;opacity:.85;flex-wrap:wrap}
+.news .opts label{display:flex;gap:6px;align-items:center}
+
+/* Footer */
+footer{border-top:1px solid var(--line);padding:56px 0 28px;margin-top:24px}
+.foot{display:grid;grid-template-columns:1.4fr repeat(4,1fr);gap:32px}
+.foot h5{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;font-family:Inter}
+.foot ul{list-style:none}.foot li{padding:4px 0;font-size:14px;color:var(--ink-2)}.foot li a:hover{color:var(--accent)}
+.foot p{font-size:14px;color:var(--ink-2);margin:12px 0 18px;max-width:300px}
+.legal{display:flex;justify-content:space-between;margin-top:40px;padding-top:20px;border-top:1px solid var(--line);font-size:13px;color:var(--muted);gap:16px;flex-wrap:wrap}
+
+/* Search modal */
+.modal{position:fixed;inset:0;background:rgba(10,15,30,.5);backdrop-filter:blur(4px);display:none;align-items:flex-start;justify-content:center;padding:80px 16px;z-index:100}
+.modal.open{display:flex}
+.modal-box{width:100%;max-width:640px;background:var(--surface);border-radius:18px;box-shadow:0 30px 60px rgba(0,0,0,.3);overflow:hidden}
+.modal-box input{width:100%;border:0;border-bottom:1px solid var(--line);padding:20px 22px;font:inherit;font-size:18px;outline:none;background:none;color:var(--ink)}
+.modal-box .sugg{padding:14px 22px 22px}
+.modal-box h5{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:10px 0 8px;font-family:Inter}
+.modal-box .row{display:flex;flex-wrap:wrap;gap:8px}
+.modal-box .row span{padding:7px 12px;border-radius:999px;background:var(--surface-2);font-size:13.5px;cursor:pointer}
+.modal-box .row span:hover{background:var(--gold-soft)}
+
+/* Mobile drawer */
+.drawer{position:fixed;inset:0 0 0 auto;width:min(340px,88vw);background:var(--surface);z-index:120;transform:translateX(100%);transition:.3s;padding:24px;box-shadow:-20px 0 40px rgba(0,0,0,.2);overflow-y:auto}
+.drawer.open{transform:none}
+.drawer a{display:block;padding:14px 0;border-bottom:1px solid var(--line);font-weight:500}
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:110;display:none}
+.scrim.open{display:block}
+
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .6s,transform .6s}
+.reveal.in{opacity:1;transform:none}
+
+@media (max-width:1180px){.search-btn{display:none}}
+@media (max-width:1080px){
+  .mainnav,.search-btn{display:none}
+  .burger{display:grid}
+  .hero-grid,.today,.duo,.news{grid-template-columns:1fr}
+  .pill-grid{grid-template-columns:1fr 1fr}
+  .art-grid{grid-template-columns:1fr 1fr}
+  .art.big{grid-column:span 2;grid-row:auto}
+  .foot{grid-template-columns:1fr 1fr 1fr}
+  .foot > div:first-child{grid-column:1/-1}
+}
+@media (max-width:640px){
+  .wrap{padding:0 16px}
+  .util nav a:not(.keep){display:none}
+  .hero-main{min-height:420px}
+  .hero-main h1{font-size:30px}
+  .hero-main .content{padding:24px}
+  .pill-grid,.art-grid{grid-template-columns:1fr}
+  .art.big{grid-column:auto}
+  .sec-head{flex-direction:column;align-items:flex-start}
+  .sec-head h2{font-size:28px}
+  .tabs{overflow-x:auto;max-width:100%}
+  .news{padding:28px}
+  .news h2{font-size:28px}
+  .ask,.center{padding:24px}
+  .foot{grid-template-columns:1fr 1fr}
+  .quick{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+<div style="background:#c99a3b;color:#1a1f2e;text-align:center;font-size:13px;font-weight:600;padding:8px 16px">Unofficial redesign concept for a job proposal — not affiliated with or endorsed by Chabad.org. All content is placeholder. <a href="../" style="text-decoration:underline">See the new version</a></div>
+
+<div class="util">
+  <div class="wrap">
+    <div class="date">Thursday, Oct 22, 2026 <span style="opacity:.4">•</span> <b>11 Cheshvan 5787</b></div>
+    <nav>
+      <a href="#">Ask the Rabbi</a>
+      <a href="#">Find a Center</a>
+      <a href="#">Subscribe</a>
+      <a href="#">English ▾</a>
+      <a href="#" class="keep">Sign in</a>
+    </nav>
+  </div>
+</div>
+
+<header class="main">
+  <div class="wrap">
+    <a href="#" class="logo">
+      <span class="logo-mark">✡</span>
+      <span>Chabad.org<small>JUDAISM · TORAH · LIFE</small></span>
+    </a>
+    <nav class="mainnav">
+      <div>
+        <a href="#">Jewish Practice</a>
+        <div class="mega"><div class="mega-inner">
+          <div><h5>Everyday</h5><ul><li><a href="#">Prayer</a></li><li><a href="#">Kosher</a></li><li><a href="#">Tefillin</a></li><li><a href="#">Mezuzah</a></li><li><a href="#">Tzedakah</a></li></ul></div>
+          <div><h5>Life Cycle</h5><ul><li><a href="#">Birth & Bris</a></li><li><a href="#">Bar/Bat Mitzvah</a></li><li><a href="#">Marriage</a></li><li><a href="#">Mourning</a></li></ul></div>
+          <div class="mega-feat"><span class="eyebrow">New guide</span><h4>Your First Shabbat</h4><p>A step-by-step, no-pressure guide to the day of rest.</p></div>
+        </div></div>
+      </div>
+      <div>
+        <a href="#">Learning & Values</a>
+        <div class="mega"><div class="mega-inner">
+          <div><h5>Torah</h5><ul><li><a href="#">Weekly Parshah</a></li><li><a href="#">Daily Study</a></li><li><a href="#">Tanya</a></li><li><a href="#">Talmud</a></li></ul></div>
+          <div><h5>Explore</h5><ul><li><a href="#">Jewish History</a></li><li><a href="#">Kabbalah</a></li><li><a href="#">The Rebbe</a></li><li><a href="#">Courses</a></li></ul></div>
+          <div class="mega-feat"><span class="eyebrow">This week</span><h4>Lech-Lecha</h4><p>Abraham's journey — and what it means for ours.</p></div>
+        </div></div>
+      </div>
+      <div>
+        <a href="#">Community & Family</a>
+        <div class="mega"><div class="mega-inner">
+          <div><h5>Family</h5><ul><li><a href="#">Parenting</a></li><li><a href="#">Kids Zone</a></li><li><a href="#">Recipes</a></li><li><a href="#">Women</a></li></ul></div>
+          <div><h5>Community</h5><ul><li><a href="#">Find a Center</a></li><li><a href="#">Events</a></li><li><a href="#">Volunteer</a></li><li><a href="#">Israel</a></li></ul></div>
+          <div class="mega-feat"><span class="eyebrow">Near you</span><h4>3,500+ Centers</h4><p>Find your local Chabad in 100+ countries.</p></div>
+        </div></div>
+      </div>
+      <div>
+        <a href="#">Inspiration</a>
+        <div class="mega"><div class="mega-inner">
+          <div><h5>Watch & Listen</h5><ul><li><a href="#">Videos</a></li><li><a href="#">Podcasts</a></li><li><a href="#">Music</a></li></ul></div>
+          <div><h5>Read</h5><ul><li><a href="#">Stories</a></li><li><a href="#">Essays</a></li><li><a href="#">Quizzes</a></li></ul></div>
+          <div class="mega-feat"><span class="eyebrow">Popular</span><h4>Daily Dose</h4><p>Two minutes of wisdom, every morning.</p></div>
+        </div></div>
+      </div>
+    </nav>
+    <div class="hdr-actions">
+      <button class="search-btn" onclick="openSearch()">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        Search <kbd>⌘K</kbd>
+      </button>
+      <button class="icon-btn" onclick="toggleTheme()" aria-label="Toggle theme">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+      <a href="#" class="btn btn-gold">Donate</a>
+      <button class="icon-btn burger" onclick="toggleDrawer()" aria-label="Menu">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+<section class="hero">
+  <div class="wrap hero-grid">
+    <a href="#" class="hero-main reveal">
+      <svg class="art" viewBox="0 0 400 460" fill="none">
+        <circle cx="290" cy="140" r="90" fill="#f6d27f" opacity=".35"/>
+        <g transform="translate(170 90) rotate(-12)">
+          <path d="M0 40 C60 10 110 10 140 40 L140 220 C110 190 60 190 0 220Z" fill="#fdf3dc"/>
+          <path d="M140 40 C170 10 220 10 280 40 L280 220 C220 190 170 190 140 220Z" fill="#f6e6c2"/>
+          <g stroke="#c9a463" stroke-width="3" stroke-linecap="round" opacity=".7">
+            <path d="M25 70h90M25 92h90M25 114h80M25 136h90M25 158h70"/>
+            <path d="M165 70h90M165 92h90M165 114h80M165 136h90M165 158h70"/>
+          </g>
+        </g>
+        <g fill="#f5d48b" opacity=".9">
+          <circle cx="330" cy="70" r="4"/><circle cx="350" cy="110" r="3"/><circle cx="300" cy="50" r="2.5"/><circle cx="370" cy="80" r="2"/>
+        </g>
+      </svg>
+      <div class="content">
+        <span class="eyebrow">Prayer in Judaism · Featured</span>
+        <h1>Who Wrote Adon Olam, and How Did It Become So Famous?</h1>
+        <p>It's sung in nearly every synagogue on earth — yet its author remains a mystery. We trace the hymn's remarkable journey.</p>
+        <div class="meta"><span>By Yehuda Shurpin</span><span>•</span><span>8 min read</span><span class="btn btn-gold" style="margin-left:auto;padding:9px 16px">Read story →</span></div>
+      </div>
+    </a>
+
+    <div class="hero-side">
+      <div class="card shabbat reveal">
+        <div class="candles">
+          <div><div class="flame"></div><div class="candle"></div></div>
+          <div><div class="flame" style="animation-delay:.4s"></div><div class="candle"></div></div>
+        </div>
+        <span class="eyebrow">This Shabbat</span>
+        <h3>Parshat Lech-Lecha</h3>
+        <div class="loc">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-12a7 7 0 0 1 14 0c0 5.8-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          New York, NY · <u style="cursor:pointer">change</u>
+        </div>
+        <div class="times">
+          <div><small>Candle lighting · Fri</small><strong>5:42 PM</strong></div>
+          <div><small>Shabbat ends · Sat</small><strong>6:41 PM</strong></div>
+        </div>
+        <a href="#" class="btn">Full Zmanim & calendar →</a>
+      </div>
+      <div class="card quick reveal">
+        <a href="#" class="q"><small>Upcoming holiday</small><h4>Chanukah</h4><span>Dec 4 – Dec 12</span>
+          <div class="countdown"><b id="days">43</b><span style="font-size:12px;color:var(--muted);align-self:end">days away</span></div></a>
+        <a href="#" class="q"><small>Daily study</small><h4>Tanya</h4><span>Chapter 31 · 6 min</span></a>
+        <a href="#" class="q"><small>Kids</small><h4>Parshah Quiz</h4><span>Who was Keturah?</span></a>
+        <a href="#" class="q"><small>Listen</small><h4>Daily Dose</h4><span>2-min podcast</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="pillars">
+  <div class="wrap">
+    <div class="pill-grid">
+      <a href="#" class="pillar reveal">
+        <div class="ic"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 3v18M5 8h14M7 21h10"/></svg></div>
+        <h3>Jewish Practice</h3><p>Mitzvahs, holidays and daily rituals — explained simply.</p>
+        <div class="tags"><span>Shabbat</span><span>Kosher</span><span>Prayer</span></div>
+      </a>
+      <a href="#" class="pillar reveal">
+        <div class="ic"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/></svg></div>
+        <h3>Learning & Values</h3><p>Torah, Talmud, Kabbalah and history for every level.</p>
+        <div class="tags"><span>Parshah</span><span>Tanya</span><span>Courses</span></div>
+      </a>
+      <a href="#" class="pillar reveal">
+        <div class="ic"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="10" r="2.5"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M14 20c0-2.5 1.5-4.5 3-4.5s4 1.5 4 4.5"/></svg></div>
+        <h3>Community & Family</h3><p>Parenting, recipes, events and your local Chabad.</p>
+        <div class="tags"><span>Kids</span><span>Recipes</span><span>Events</span></div>
+      </a>
+      <a href="#" class="pillar reveal">
+        <div class="ic"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z"/></svg></div>
+        <h3>Inspiration</h3><p>Stories, videos, music and podcasts to uplift your day.</p>
+        <div class="tags"><span>Videos</span><span>Stories</span><span>Music</span></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><span class="eyebrow">Fresh this week</span><h2>Latest from Chabad.org</h2></div>
+      <div class="tabs" id="tabs">
+        <button class="on">All</button><button>Articles</button><button>Video</button><button>Audio</button><button>Quizzes</button>
+      </div>
+    </div>
+    <div class="art-grid">
+      <a href="#" class="card art big reveal">
+        <div class="thumb t1"><div class="pattern"></div><div class="big-type" style="font-size:96px">Bris?</div><span class="badge">▶ Video · 4:12</span></div>
+        <div class="body"><span class="cat">Chabad.org Video</span><h3>What Is a Bris?</h3><p>Get the quick info you need on this super-important Jewish ritual that ties us with G‑d and our nation.</p><div class="by"><span class="avatar"></span>Hershey Sufrin</div></div>
+      </a>
+      <a href="#" class="card art reveal">
+        <div class="thumb t2"><div class="pattern"></div><div class="big-type" style="font-size:40px">Quiz</div></div>
+        <div class="body"><span class="cat">Jewish Quizzes</span><h3>Take the Abraham's Family Quiz</h3><div class="by"><span class="avatar"></span>Menachem Posner</div></div>
+      </a>
+      <a href="#" class="card art reveal">
+        <div class="thumb t3"><div class="pattern"></div><span class="badge">Jewish Life</span></div>
+        <div class="body"><span class="cat">Jewish Life</span><h3>Albany, Canaan, or Wherever You Find Yourself</h3><div class="by"><span class="avatar"></span>Mordechai Rubin</div></div>
+      </a>
+      <a href="#" class="card art reveal">
+        <div class="thumb t4"><div class="pattern"></div><div class="play"><span><svg width="20" height="20" viewBox="0 0 24 24" fill="#14305c"><path d="M8 5v14l11-7z"/></svg></span></div></div>
+        <div class="body"><span class="cat">The Rebbe</span><h3>Abraham: A Father to All Nations</h3><div class="by"><span class="avatar"></span>Shalom Paltiel</div></div>
+      </a>
+      <a href="#" class="card art reveal">
+        <div class="thumb t5"><div class="pattern"></div><span class="badge">🎧 Podcast · 22 min</span></div>
+        <div class="body"><span class="cat">Parshah</span><h3>Leaving Home to Find Yourself</h3><div class="by"><span class="avatar"></span>Sarah Esther Crispe</div></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="sec" style="padding-top:0">
+  <div class="wrap today">
+    <div class="card daily reveal">
+      <span class="eyebrow">Your daily routine</span>
+      <h3>Today in Judaism</h3>
+      <div class="daily-list">
+        <a href="#" class="daily-item"><span class="ic">📖</span><div><b>Chumash with Rashi</b><small>Lech-Lecha · 5th portion</small></div><span class="arr">→</span></a>
+        <a href="#" class="daily-item"><span class="ic">✦</span><div><b>Tanya</b><small>Likutei Amarim, Ch. 31</small></div><span class="arr">→</span></a>
+        <a href="#" class="daily-item"><span class="ic">🕯</span><div><b>Halachic Times</b><small>Sunrise 7:14 · Sunset 5:59</small></div><span class="arr">→</span></a>
+        <a href="#" class="daily-item"><span class="ic">📅</span><div><b>Jewish Calendar</b><small>11 Cheshvan 5787</small></div><span class="arr">→</span></a>
+      </div>
+    </div>
+    <div class="card history reveal">
+      <span class="eyebrow">On this day · 11 Cheshvan</span>
+      <h3 style="font-size:24px;margin-top:6px">Today in Jewish History</h3>
+      <div class="timeline">
+        <div class="tl"><span class="yr">2105 BCE</span><h4>Passing of Methuselah</h4><p>The longest-lived human being of all time, died at the age of 969.</p><a href="#">Read more →</a></div>
+        <div class="tl"><span class="yr">1553 BCE</span><h4>Passing of Rachel</h4><p>The matriarch Rachel died in childbirth on the road to Bethlehem.</p><a href="#">Read more →</a></div>
+        <div class="tl" style="padding-bottom:0"><span class="yr">1797</span><h4>Passing of R. Nachum of Chernobyl</h4><p>A disciple of the Baal Shem Tov and founder of the Chernobyl dynasty.</p><a href="#">Read more →</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="videos">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><span class="eyebrow">Watch</span><h2>Video & Podcasts</h2></div>
+      <a href="#" class="btn" style="background:rgba(255,255,255,.12);color:#fff">Browse library →</a>
+    </div>
+    <div class="vrow">
+      <a href="#" class="vcard"><div class="thumb t6"><div class="pattern"></div><span class="dur">12:40</span></div><div class="b"><h4>The Rebbe on Leadership</h4><small>Living Torah · Ep. 412</small></div></a>
+      <a href="#" class="vcard"><div class="thumb t2"><div class="pattern"></div><span class="dur">5:02</span></div><div class="b"><h4>Challah in 5 Minutes</h4><small>Kosher Kitchen</small></div></a>
+      <a href="#" class="vcard"><div class="thumb t4"><div class="pattern"></div><span class="dur">18:21</span></div><div class="b"><h4>Kabbalah of Light</h4><small>Mystical Insights</small></div></a>
+      <a href="#" class="vcard"><div class="thumb t3"><div class="pattern"></div><span class="dur">3:45</span></div><div class="b"><h4>Parshah for Kids</h4><small>Lech-Lecha animated</small></div></a>
+      <a href="#" class="vcard"><div class="thumb t1"><div class="pattern"></div><span class="dur">24:10</span></div><div class="b"><h4>Faith in Uncertain Times</h4><small>Podcast · Ep. 88</small></div></a>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap duo">
+    <div class="card ask reveal">
+      <span class="eyebrow">Ask the Rabbi</span>
+      <h2>Have a question? A real rabbi will answer.</h2>
+      <p>Over 1 million questions answered privately since 1998 — no question too big or too small.</p>
+      <textarea placeholder="Type your question…"></textarea>
+      <div class="chips"><span>Can I eat dairy after meat?</span><span>How do I say Kaddish?</span><span>Why light candles?</span></div>
+      <a href="#" class="btn btn-primary">Send privately →</a>
+    </div>
+    <div class="card center reveal">
+      <span class="eyebrow">Find a Center</span>
+      <h2>Your Chabad is closer than you think.</h2>
+      <p>Classes, holiday services and a warm Shabbat table — wherever you are.</p>
+      <div class="loc-search">
+        <input placeholder="City, state or zip code">
+        <button class="btn btn-primary">Find</button>
+      </div>
+      <div class="map">
+        <svg viewBox="0 0 400 160" preserveAspectRatio="none"><path d="M0 110 Q60 70 120 95 T240 80 T400 95 V160 H0Z" fill="var(--line)"/><path d="M0 60 Q100 30 180 55 T400 40" stroke="var(--line)" stroke-width="2" fill="none" stroke-dasharray="4 6"/></svg>
+        <span class="pin" style="left:22%;top:55%"></span>
+        <span class="pin" style="left:48%;top:35%;animation-delay:.5s"></span>
+        <span class="pin" style="left:72%;top:60%;animation-delay:1s"></span>
+        <span class="pin" style="left:86%;top:30%;animation-delay:1.5s"></span>
+      </div>
+      <div class="stat-row"><div><b>3,500+</b><small>Centers</small></div><div><b>100+</b><small>Countries</small></div><div><b>24/7</b><small>Online</small></div></div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <section class="news reveal">
+    <div>
+      <span class="eyebrow">Weekly Magazine</span>
+      <h2>A little wisdom in your inbox.</h2>
+      <p>Parshah insights, holiday guides and stories — curated every Thursday. Join 500,000+ readers.</p>
+    </div>
+    <div>
+      <form onsubmit="event.preventDefault();this.querySelector('button').textContent='Subscribed ✓'">
+        <input type="email" placeholder="you@email.com">
+        <button class="btn btn-gold">Subscribe</button>
+      </form>
+      <div class="opts"><label><input type="checkbox" checked> Weekly Magazine</label><label><input type="checkbox"> Daily Dose</label><label><input type="checkbox"> Holiday alerts</label></div>
+    </div>
+  </section>
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <a href="#" class="logo"><span class="logo-mark">✡</span><span>Chabad.org</span></a>
+        <p>Bringing the wisdom and warmth of Judaism to everyone, everywhere — since 1993.</p>
+        <a href="#" class="btn btn-gold">Support our mission</a>
+      </div>
+      <div><h5>Practice</h5><ul><li><a href="#">Shabbat</a></li><li><a href="#">Holidays</a></li><li><a href="#">Kosher</a></li><li><a href="#">Prayer</a></li></ul></div>
+      <div><h5>Learn</h5><ul><li><a href="#">Parshah</a></li><li><a href="#">Daily Study</a></li><li><a href="#">The Rebbe</a></li><li><a href="#">Courses</a></li></ul></div>
+      <div><h5>Connect</h5><ul><li><a href="#">Find a Center</a></li><li><a href="#">Ask the Rabbi</a></li><li><a href="#">Events</a></li><li><a href="#">Newsletters</a></li></ul></div>
+      <div><h5>About</h5><ul><li><a href="#">Our Mission</a></li><li><a href="#">Contact</a></li><li><a href="#">Careers</a></li><li><a href="#">Privacy</a></li></ul></div>
+    </div>
+    <div class="legal"><span>Unofficial design concept · not affiliated with Chabad.org</span><span>Preview only · placeholder content</span></div>
+  </div>
+</footer>
+
+<div class="modal" id="search" onclick="if(event.target===this)closeSearch()">
+  <div class="modal-box">
+    <input placeholder="Search articles, holidays, videos, rabbis…" id="sq">
+    <div class="sugg">
+      <h5>Trending</h5>
+      <div class="row"><span>Chanukah 2026</span><span>Candle lighting times</span><span>Lech-Lecha</span><span>Kaddish</span><span>Mezuzah</span></div>
+      <h5>Jump to</h5>
+      <div class="row"><span>📅 Jewish Calendar</span><span>🕯 Zmanim</span><span>📖 Daily Study</span><span>📍 Find a Center</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="scrim" id="scrim" onclick="toggleDrawer()"></div>
+<aside class="drawer" id="drawer">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><span class="logo">Menu</span><button class="icon-btn" onclick="toggleDrawer()">✕</button></div>
+  <button class="search-btn" style="display:flex;width:100%;margin-bottom:8px" onclick="toggleDrawer();openSearch()">Search…</button>
+  <a href="#">Jewish Practice</a><a href="#">Learning & Values</a><a href="#">Community & Family</a><a href="#">Inspiration</a><a href="#">Ask the Rabbi</a><a href="#">Find a Center</a>
+  <a href="#" class="btn btn-gold" style="margin-top:20px;justify-content:center;border:0">Donate</a>
+</aside>
+
+<script>
+function openSearch(){document.getElementById('search').classList.add('open');setTimeout(()=>document.getElementById('sq').focus(),50)}
+function closeSearch(){document.getElementById('search').classList.remove('open')}
+document.addEventListener('keydown',e=>{if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();openSearch()}if(e.key==='Escape')closeSearch()});
+function toggleDrawer(){document.getElementById('drawer').classList.toggle('open');document.getElementById('scrim').classList.toggle('open')}
+function toggleTheme(){
+  const r=document.documentElement;
+  const dark=r.dataset.theme?r.dataset.theme==='dark':matchMedia('(prefers-color-scheme: dark)').matches;
+  r.dataset.theme=dark?'light':'dark';
+  try{localStorage.setItem('theme',r.dataset.theme)}catch(e){}
+}
+try{const t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}
+document.querySelectorAll('#tabs button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#tabs button').forEach(x=>x.classList.remove('on'));b.classList.add('on')});
+const d=Math.ceil((new Date('2026-12-04')-new Date())/864e5);if(d>0)document.getElementById('days').textContent=d;
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+setTimeout(()=>document.querySelectorAll('.reveal').forEach(el=>el.classList.add('in')),1500);
+</script>
+</body>
+</html>
